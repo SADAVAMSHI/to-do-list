@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="todo-app">
+            <div class="header">
+                <div id="clock"></div>
+                <button id="theme-toggle">🔆</button>
+            </div>
+            <h2>To-Do List</h2>
+            <div class="row">
+                <input type="text" id="input-box" placeholder="Enter a new task">
+                <button id="add-button">Add</button>
+            </div>
+            <div class="task-info">
+                <p>Pending Tasks: <span id="pending-count">0</span></p>
+                <p>Completed Tasks: <span id="completed-count">0</span></p>
+            </div>
+            <ul id="list-container">
+                <!-- Tasks will appear here -->
+            </ul>
+            <div id="congratulations" class="hidden">
+                <h3>Congratulations! 🎉</h3>
+                <p>You've completed all your tasks!</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
