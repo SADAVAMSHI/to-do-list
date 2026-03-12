@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const completedCount = document.getElementById("completed-count");
     const congratulations = document.getElementById("congratulations");
 
-    let isDarkMode = false;
+    let isDarkMode = true;
 
     // Clock Update
     function updateClock() {
@@ -74,3 +74,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+
