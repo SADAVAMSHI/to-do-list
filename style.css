@@ -1,3 +1,4 @@
+/* General Styles & Reset */
 * {
     margin: 0;
     padding: 0;
@@ -7,14 +8,16 @@
 
 body {
     transition: background 0.3s, color 0.3s;
-    background: #121212; 
+    /* Restored Original Dark Mode Gradient */
+    background: linear-gradient(to bottom, rgb(44, 20, 87), rgb(0, 102, 128), rgb(14, 14, 73), rgb(72, 4, 76));
     color: #fff;
     min-height: 100vh;
 }
 
 body.light {
-    background: #f0f2f5; 
-    color: #333;
+    /* Restored Original Light Mode Gradient */
+    background: linear-gradient(to bottom, rgb(139, 24, 135), rgb(52, 179, 196), rgb(28, 50, 131), rgb(139, 4, 135));
+    color: #000;
 }
 
 .container {
@@ -28,7 +31,7 @@ body.light {
 .todo-app {
     width: 100%;
     max-width: 450px;
-    background: #1e1e1e;
+    background: rgba(0, 0, 0, 0.85); /* Slight transparency to show off the gradient */
     border-radius: 16px;
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -36,8 +39,8 @@ body.light {
 }
 
 body.light .todo-app {
-    background: #ffffff;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .header {
@@ -82,13 +85,13 @@ input[type="date"] {
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #444;
-    background: #2a2a2a;
+    background: rgba(0, 0, 0, 0.5);
     color: white;
     outline: none;
 }
 
 body.light input[type="date"] {
-    background: #f9f9f9;
+    background: rgba(255, 255, 255, 0.8);
     color: #333;
     border: 1px solid #ccc;
 }
@@ -98,13 +101,13 @@ body.light input[type="date"] {
     flex-direction: column;
     gap: 10px;
     margin-bottom: 25px;
-    background: #2a2a2a;
+    background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 12px;
 }
 
 body.light .add-task-container {
-    background: #f9f9f9;
+    background: rgba(255, 255, 255, 0.5);
 }
 
 input[type="text"] {
@@ -128,7 +131,7 @@ select, input[type="time"], #add-button {
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #555;
-    background: #333;
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
     font-size: 13px;
     outline: none;
@@ -136,7 +139,7 @@ select, input[type="time"], #add-button {
 }
 
 body.light select, body.light input[type="time"] {
-    background: #fff;
+    background: rgba(255, 255, 255, 0.8);
     color: #333;
     border: 1px solid #ccc;
 }
@@ -157,15 +160,15 @@ body.light select, body.light input[type="time"] {
     justify-content: space-between;
     margin-bottom: 15px;
     font-size: 14px;
-    color: #aaa;
+    color: #ccc;
 }
 
-body.light .task-info { color: #666; }
+body.light .task-info { color: #555; }
 
 ul { list-style: none; }
 
 ul li {
-    background: #2a2a2a;
+    background: rgba(0, 0, 0, 0.4);
     margin-bottom: 12px;
     padding: 15px;
     border-radius: 10px;
@@ -175,7 +178,7 @@ ul li {
     transition: background 0.3s;
 }
 
-body.light ul li { background: #f9f9f9; }
+body.light ul li { background: rgba(255, 255, 255, 0.6); }
 
 ul li.completed .task-text {
     text-decoration: line-through;
@@ -213,7 +216,8 @@ ul li input[type="checkbox"] {
 .priority-Medium { background-color: #f39c12; color: white; }
 .priority-Low { background-color: #2ecc71; color: white; }
 
-.task-time { font-size: 11px; color: #aaa; }
+.task-time { font-size: 11px; color: #ccc; }
+body.light .task-time { color: #555; }
 
 .delete-btn {
     background: #e74c3c;
