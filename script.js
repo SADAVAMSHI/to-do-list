@@ -64,8 +64,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // --- Core Functions ---
+
+    // Updated: Forces 12-hour format (AM/PM) for the live clock
     function updateClock() {
-        clock.textContent = new Date().toLocaleTimeString();
+        clock.textContent = new Date().toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+    }
+
+    // New: Helper to convert 24h input time to 12h display time
+    function formatTime12Hour(time24) {
+        if (!time24) return "";
+        const [hour, minute] = time24.split(":");
+        let h = parseInt(hour, 10);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12; // Convert '0' or '12' to 12, and '13+' to 1-11
+        return `${h}:${minute} ${ampm}`;
     }
 
     function saveData() {
@@ -87,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
             text: text,
             completed: false,
             priority: prioritySelect.value,
-            time: timePicker.value
+            time: timePicker.value // Saves exactly what the input gives (24h)
         });
 
         // Reset Inputs
@@ -117,7 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderTasks() {
-        // Clear the list safely without innerHTML
         listContainer.replaceChildren(); 
         
         const tasks = appData[selectedDate] || [];
@@ -137,62 +153,51 @@ document.addEventListener("DOMContentLoaded", () => {
         tasks.forEach(task => {
             if (task.completed) completed++;
             
-            // 1. Create List Item container
             const li = document.createElement("li");
             li.dataset.id = task.id;
             if (task.completed) li.classList.add("completed");
 
-            // 2. Create Checkbox
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             if (task.completed) checkbox.checked = true;
 
-            // 3. Create Task Content Wrapper
             const taskContentWrapper = document.createElement("div");
             taskContentWrapper.className = "task-content";
 
-            // 4. Create Task Text
             const taskTextSpan = document.createElement("span");
             taskTextSpan.className = "task-text";
             taskTextSpan.textContent = task.text;
 
-            // 5. Create Task Meta Wrapper (Priority & Time)
             const taskMetaWrapper = document.createElement("div");
             taskMetaWrapper.className = "task-meta";
 
-            // 6. Create Priority Badge
             const priorityBadge = document.createElement("span");
             priorityBadge.className = `priority-badge priority-${task.priority}`;
             priorityBadge.textContent = task.priority;
             taskMetaWrapper.appendChild(priorityBadge);
 
-            // 7. Create Time Display (if time was set)
+            // Updated: Render the time in 12-hour format
             if (task.time) {
+                const displayTime = formatTime12Hour(task.time);
                 const timeSpan = document.createElement("span");
                 timeSpan.className = "task-time";
-                timeSpan.textContent = `⏰ ${task.time}`;
+                timeSpan.textContent = `⏰ ${displayTime}`;
                 taskMetaWrapper.appendChild(timeSpan);
             }
 
-            // Assemble content wrapper
             taskContentWrapper.appendChild(taskTextSpan);
             taskContentWrapper.appendChild(taskMetaWrapper);
 
-            // 8. Create Delete Button
             const deleteButton = document.createElement("button");
             deleteButton.className = "delete-btn";
             deleteButton.textContent = "Delete";
 
-            // 9. Attach everything to the main List Item
             li.appendChild(checkbox);
             li.appendChild(taskContentWrapper);
             li.appendChild(deleteButton);
-
-            // 10. Add List Item to the page
             listContainer.appendChild(li);
         });
 
-        // Update Stats
         pendingCount.textContent = tasks.length - completed;
         completedCount.textContent = completed;
 
