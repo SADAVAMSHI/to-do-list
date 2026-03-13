@@ -9,29 +9,33 @@
 <body class="dark">
     <div class="container">
         <div class="todo-app">
+            
             <div class="header">
                 <div id="clock">00:00:00</div>
                 <div class="streak-badge" title="Complete all tasks in a day to grow your streak!">
                     🔥 Streak: <span id="streak-count">0</span>
                 </div>
-                <button id="theme-toggle">🔆</button>
+                <button id="theme-toggle" title="Toggle Theme">🔆</button>
             </div>
             
-            <h2>To-Do List</h2>
+            <h2>My Tasks</h2>
             
             <div class="calendar-container">
-                <label for="date-picker">📅 Date:</label>
+                <label for="date-picker">📅</label>
                 <input type="date" id="date-picker">
             </div>
-         <div class="row input-row">
-                 <input type="text" id="input-box" placeholder="Enter a new task..." autocomplete="off">
-                <select id="priority-select" title="Set Priority">
-                    <option value="Low">Low</option>
-                    <option value="Medium" selected>Medium</option>
-                    <option value="High">High</option>
-                </select>
-                <input type="time" id="time-picker" title="Optional Time">
-                <button id="add-button">Add</button>
+
+            <div class="add-task-container">
+                <input type="text" id="input-box" placeholder="What needs to be done?" autocomplete="off">
+                <div class="task-options">
+                    <select id="priority-select" title="Set Priority">
+                        <option value="Low">Low Priority</option>
+                        <option value="Medium" selected>Medium Priority</option>
+                        <option value="High">High Priority</option>
+                    </select>
+                    <input type="time" id="time-picker" title="Optional Time">
+                    <button id="add-button">Add</button>
+                </div>
             </div>
             
             <div class="task-info">
@@ -43,14 +47,12 @@
                 </ul>
             
             <div id="congratulations" class="hidden">
-                <h3>Congratulations! 🎉</h3>
-                <p>You've completed all tasks for this day!</p>
+                <h3>🎉 All Done!</h3>
+                <p>You've completed everything for this day.</p>
             </div>
+
         </div>
     </div>
     <script src="script.js"></script>
 </body>
 </html>
-
-
-
