@@ -242,5 +242,11 @@ body.light .task-time { color: #555; }
     border-radius: 10px;
 }
 .hidden { display: none !important; }
+/* Forces native calendar and clock icons to be visible in dark mode */
+body.dark input[type="date"],
+body.dark input[type="time"] {
+    color-scheme: dark;
+}
+
 
 
