@@ -3,37 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <title>To-Do List with Streaks</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark">
     <div class="container">
         <div class="todo-app">
             <div class="header">
-                <div id="clock"></div>
+                <div id="clock">00:00:00</div>
+                <div class="streak-badge" title="Complete all tasks in a day to grow your streak!">
+                    🔥 Streak: <span id="streak-count">0</span>
+                </div>
                 <button id="theme-toggle">🔆</button>
             </div>
+            
             <h2>To-Do List</h2>
+            
+            <div class="calendar-container">
+                <label for="date-picker">📅 Date:</label>
+                <input type="date" id="date-picker">
+            </div>
+
             <div class="row">
-                <input type="text" id="input-box" placeholder="Enter a new task">
+                <input type="text" id="input-box" placeholder="Enter a new task..." autocomplete="off">
                 <button id="add-button">Add</button>
             </div>
+            
             <div class="task-info">
-                <p>Pending Tasks: <span id="pending-count">0</span></p>
-                <p>Completed Tasks: <span id="completed-count">0</span></p>
+                <p>Pending: <span id="pending-count">0</span></p>
+                <p>Completed: <span id="completed-count">0</span></p>
             </div>
+            
             <ul id="list-container">
-                <!-- Tasks will appear here -->
-            </ul>
+                </ul>
+            
             <div id="congratulations" class="hidden">
                 <h3>Congratulations! 🎉</h3>
-                <p>You've completed all your tasks!</p>
+                <p>You've completed all tasks for this day!</p>
             </div>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
 </html>
-
-
-
