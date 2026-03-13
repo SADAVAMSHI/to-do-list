@@ -10,6 +10,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const congratulations = document.getElementById("congratulations");
     const datePicker = document.getElementById("date-picker");
     const streakCount = document.getElementById("streak-count");
+    const prioritySelect = document.getElementById("priority-select");
+    const timePicker = document.getElementById("time-picker");
+    
+    // Array to track which tasks we've already alerted the user about
+    let alertedTasks = [];
+    
 
     // --- State Management ---
     let isDarkMode = true;
@@ -23,7 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Initialization ---
     updateClock();
-    setInterval(updateClock, 1000);
+setInterval(() => {
+        updateClock();
+        checkReminders();
+    }, 1000);
     renderTasks();
     updateStreak();
 
@@ -66,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateStreak();
     }
 
-    function addTask() {
+   function addTask() {
         const text = inputBox.value.trim();
         if (!text) return alert("Please enter a task!");
 
@@ -75,10 +84,14 @@ document.addEventListener("DOMContentLoaded", () => {
         appData[selectedDate].push({
             id: Date.now(),
             text: text,
-            completed: false
+            completed: false,
+            priority: prioritySelect.value,
+            time: timePicker.value // e.g., "14:30" or empty string
         });
 
         inputBox.value = "";
+        timePicker.value = ""; // Reset time input
+        prioritySelect.value = "Medium"; // Reset priority
         saveData();
         renderTasks();
     }
@@ -99,26 +112,94 @@ document.addEventListener("DOMContentLoaded", () => {
         saveData();
         renderTasks();
     }
-
-    function renderTasks() {
+function renderTasks() {
         listContainer.innerHTML = "";
         const tasks = appData[selectedDate] || [];
         let completed = 0;
 
+        // --- NEW SORTING LOGIC ---
+        // Assign a number value to each priority so the computer knows how to rank them
+        const priorityRank = { "High": 3, "Medium": 2, "Low": 1 };
+        
+        // Sort the tasks array before displaying it
+        tasks.sort((a, b) => {
+            // First, sort by priority (High -> Medium -> Low)
+            const rankDiff = priorityRank[b.priority] - priorityRank[a.priority];
+            if (rankDiff !== 0) return rankDiff;
+            
+            // If priorities are the same, sort by time (earliest first)
+            // Tasks without a time will drop to the bottom of their priority group
+            if (a.time && b.time) return a.time.localeCompare(b.time);
+            if (a.time) return -1;
+            if (b.time) return 1;
+            return 0;
+        });
+        // -------------------------
+
+        // Now loop through the sorted tasks (the rest of your existing function)
         tasks.forEach(task => {
             if (task.completed) completed++;
             
+            // ... (rest of your existing renderTasks code stays exactly the same)
             const li = document.createElement("li");
             li.dataset.id = task.id;
             if (task.completed) li.classList.add("completed");
+            
+            const timeHtml = task.time ? `<span class="task-time">⏰ ${task.time}</span>` : "";
 
             li.innerHTML = `
                 <input type="checkbox" ${task.completed ? "checked" : ""}>
-                <span>${task.text}</span>
+                <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+                <span>${task.text} ${timeHtml}</span>
                 <button class="delete-btn">Delete</button>
             `;
             listContainer.appendChild(li);
         });
+
+        // ... (Stats and Congratulations UI stays the same)
+        pendingCount.textContent = tasks.length - completed;
+        completedCount.textContent = completed;
+
+        if (tasks.length > 0 && tasks.length === completed) {
+            congratulations.classList.remove("hidden");
+        } else {
+            congratulations.classList.add("hidden");
+        }
+    }
+
+        pendingCount.textContent = tasks.length - completed;
+        completedCount.textContent = completed;
+
+        if (tasks.length > 0 && tasks.length === completed) {
+            congratulations.classList.remove("hidden");
+        } else {
+            congratulations.classList.add("hidden");
+        }
+    };
+    function checkReminders() {
+        const todayStr = new Date().toLocaleDateString('en-CA');
+        const tasksToday = appData[todayStr] || [];
+        const now = new Date();
+        const currentHours = now.getHours();
+        const currentMinutes = now.getMinutes();
+
+        tasksToday.forEach(task => {
+            // Only alert if time is set, task is NOT completed, and we haven't alerted yet
+            if (task.time && !task.completed && !alertedTasks.includes(task.id)) {
+                const [taskHours, taskMinutes] = task.time.split(':').map(Number);
+                
+                // Convert both times to total minutes since midnight for easy subtraction
+                const timeNowInMins = (currentHours * 60) + currentMinutes;
+                const taskTimeInMins = (taskHours * 60) + taskMinutes;
+
+                // Check if the task is exactly 5 minutes away
+                if (taskTimeInMins - timeNowInMins === 5) {
+                    alert(`⏰ Reminder: Your task "${task.text}" is due in 5 minutes!`);
+                    alertedTasks.push(task.id); // Prevent alert spam
+                }
+            }
+        });
+    }
 
         // Update Stats UI
         pendingCount.textContent = tasks.length - completed;
@@ -168,3 +249,4 @@ document.addEventListener("DOMContentLoaded", () => {
         streakCount.textContent = streak;
     }
 });
+
