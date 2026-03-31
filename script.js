@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     // --- DOM Elements (Standard Declaration) ---
     const inputBox = document.getElementById("input-box");
-    const addButton = document.getElementById("add-button");
+    const addButton = document.getElementById("add-button")
     const listContainer = document.getElementById("list-container");
     const themeToggle = document.getElementById("theme-toggle");
     const clock = document.getElementById("clock");
